@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Container, Typography, Paper, Grid, Button } from "@material-ui/core";
 import trainsApi from "../api";
-import "./TrainDetails.css";
 
 function TrainDetails() {
   const { id } = useParams();
