@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Container, Typography, Paper, Grid, Button } from "@material-ui/core";
 import trainsApi from "../api";
+import "./TrainDetails.css";
 
 function TrainDetails() {
   const { id } = useParams();
@@ -63,7 +64,13 @@ function TrainDetails() {
             Loading data...
           </Typography>
         ) : (
-          <Paper elevation={3}>
+          <Paper
+            elevation={3}
+            style={{
+              padding: "20px",
+              margin: "20px",
+            }}
+          >
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
