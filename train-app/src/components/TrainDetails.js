@@ -8,31 +8,32 @@ function TrainDetails() {
   const history = useHistory();
   const [train, setTrain] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState("");
+  //   const [token, setToken] = useState("");
+
+  //   useEffect(() => {}, [token]);
 
   useEffect(() => {
-    trainsApi
-      .fetchToken()
-      .then((token) => {
-        setToken(token);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [token]);
-
-  useEffect(() => {
-    if (id && token) {
-      trainsApi
-        .fetchParticularTrain(id, token)
-        .then((train) => {
-          setTrain(train);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    const fetchData = async () => {
+      if (id) {
+        await trainsApi
+          .fetchToken()
+          .then(async (token) => {
+            await trainsApi
+              .fetchParticularTrain(id, token)
+              .then((data) => {
+                setTrain(data);
+                setLoading(false);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+    fetchData();
   }, [id]);
 
   function formatDateTime(date) {
@@ -77,32 +78,36 @@ function TrainDetails() {
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
                   Departure Time:{" "}
-                  {formatDateTime(new Date(train.departureTime))}
+                  {train.departureTime.Hours +
+                    ":" +
+                    train.departureTime.Minutes +
+                    ":" +
+                    train.departureTime.Seconds}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
-                  Delay (in minutes): {train.delayInMinutes}
+                  Delay (in minutes): {train.delayedBy}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
-                  Sleeper Price: {train.sleeper.price}
+                  Sleeper Price: {train.price.sleeper}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
-                  Sleeper Seats Availability: {train.sleeper.seatsAvailability}
+                  Sleeper Seats Availability: {train.seatsAvailable.sleeper}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
-                  AC Price: {train.ac.price}
+                  AC Price: {train.price.AC}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="h6" align="center">
-                  AC Seats Availability: {train.ac.seatsAvailability}
+                  AC Seats Availability: {train.seatsAvailable.AC}
                 </Typography>
               </Grid>
               <Grid item xs={12}>

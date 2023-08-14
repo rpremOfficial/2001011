@@ -54,6 +54,7 @@ class Trains {
           },
         });
         const data = await response.json();
+        console.log(data)
         resolve(data);
       } catch (error) {
         reject(error);
